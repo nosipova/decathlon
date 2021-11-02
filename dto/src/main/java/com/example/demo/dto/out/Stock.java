@@ -7,41 +7,43 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.example.demo.dto.in.ShoeFilter.Color;
-import com.example.demo.dto.out.Shoe.ShoeBuilder;
+import com.example.demo.dto.out.Stock.StockBuilder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+/**
+ * dto del stock 
+ * 
+ * @author nosipova
+ *
+ */
 @Value
 @Builder
-@JsonDeserialize(builder = ShoeBuilder.class)
-@RequiredArgsConstructor
-public class Shoe {
+@JsonDeserialize(builder = StockBuilder.class)
+public class Stock {
 
-	private String name;
+	private State state;
 
-	@NotNull
+	private Shoes shoes;
+
 	@NotEmpty
-	@Min(13)
-	@Max(60)
-	private BigInteger size;
-
 	@NotNull
-	@NotEmpty
-	private Color color;
-
-	@NotNull
-	@NotEmpty
-	@Min(0)
 	@Max(30)
-	private BigInteger quantity;
+	@Min(0)
+	private BigInteger totalQuantity;
+
+
+	public enum State {
+
+		EMPTY, FULL, SOME;
+
+	}
 
 	@JsonPOJOBuilder(withPrefix = "")
-	public static class ShoeBuilder {
+	public static class StockBuilder {
 
 	}
 

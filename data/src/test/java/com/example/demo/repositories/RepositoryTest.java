@@ -1,0 +1,87 @@
+package com.example.demo.repositories;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+
+import com.example.demo.entities.ShoeEntity;
+import com.example.demo.entities.StockEntity;
+
+@SpringBootTest
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+public class RepositoryTest {
+
+	@Autowired
+	private StockRepository stockRepository;
+
+	@Autowired
+	private ShoeRepository shoeRepository;
+
+	@BeforeEach
+	public void initDB() {
+
+	}
+
+	@Test
+	public void obtenerTodoStock() {
+		List<StockEntity> stocks = this.stockRepository.findAll();
+		assertThat(stocks).isNotEmpty();
+		assertThat(stocks.size()).isEqualTo(19);
+	}
+
+	@Test
+	public void obtenerCantidadCalzadoTallaConcreta() {
+		List<ShoeEntity> shoes = this.shoeRepository.findAll();
+		assertThat(shoes).isNotEmpty();
+		assertThat(shoes.size()).isEqualTo(36);
+	}
+
+	@Test
+	public void obtenerTodoCalzadoStock() {
+		assertThat(stockRepository.count()).isEqualTo(1);
+		StockEntity stockEntity = this.stockRepository.findAll().get(0);
+		assertThat(stockEntity.getShoesEntity()).isNotEmpty();
+
+	}
+
+	@Test
+	public void recuperarUnCalzadoExistente() {
+
+		ShoeEntity shoeEntity = new ShoeEntity();
+		shoeEntity.setColor("BLACK");
+		shoeEntity.setSize(BigInteger.valueOf(42));
+
+		Example<ShoeEntity> example = Example.of(shoeEntity);
+
+		assertThat(this.shoeRepository.exists(example)).isTrue();
+
+		Optional<ShoeEntity> optionalShoeEntity = this.shoeRepository.findOne(example);
+		assertThat(optionalShoeEntity.get()).isNotNull();
+
+	}
+
+	@Test
+	public void recuperarUnCalzadoNoExistente() {
+
+		ShoeEntity shoeEntity = new ShoeEntity();
+		shoeEntity.setColor("BLACK");
+		shoeEntity.setId_Shoe(BigInteger.TWO);
+		shoeEntity.setQuantity(BigInteger.valueOf(210));
+		shoeEntity.setSize(BigInteger.valueOf(20));
+		Example<ShoeEntity> example = Example.of(shoeEntity);
+
+		assertThat(this.shoeRepository.exists(example)).isFalse();
+
+	}
+
+}
