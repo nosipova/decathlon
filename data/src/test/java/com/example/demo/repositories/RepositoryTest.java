@@ -33,21 +33,21 @@ public class RepositoryTest {
 	}
 
 	@Test
-	public void obtenerTodoStock() {
+	public void getAllStock() {
 		List<StockEntity> stocks = this.stockRepository.findAll();
 		assertThat(stocks).isNotEmpty();
-		assertThat(stocks.size()).isEqualTo(19);
+		assertThat(stocks.size()).isEqualTo(1);
 	}
 
 	@Test
-	public void obtenerCantidadCalzadoTallaConcreta() {
+	public void getTotalStockShoesQuantity() {
 		List<ShoeEntity> shoes = this.shoeRepository.findAll();
 		assertThat(shoes).isNotEmpty();
-		assertThat(shoes.size()).isEqualTo(36);
+		assertThat(shoes.size()).isEqualTo(13);
 	}
 
 	@Test
-	public void obtenerTodoCalzadoStock() {
+	public void getAllShoesFromStock() {
 		assertThat(stockRepository.count()).isEqualTo(1);
 		StockEntity stockEntity = this.stockRepository.findAll().get(0);
 		assertThat(stockEntity.getShoesEntity()).isNotEmpty();
@@ -55,7 +55,7 @@ public class RepositoryTest {
 	}
 
 	@Test
-	public void recuperarUnCalzadoExistente() {
+	public void getExistsShoe() {
 
 		ShoeEntity shoeEntity = new ShoeEntity();
 		shoeEntity.setColor("BLACK");
@@ -71,7 +71,7 @@ public class RepositoryTest {
 	}
 
 	@Test
-	public void recuperarUnCalzadoNoExistente() {
+	public void getNotExistsShoe() {
 
 		ShoeEntity shoeEntity = new ShoeEntity();
 		shoeEntity.setColor("BLACK");

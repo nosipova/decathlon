@@ -1,6 +1,20 @@
+CREATE TABLE stock (
+  id_stock INT AUTO_INCREMENT  PRIMARY KEY,
+  total_quantity INT NOT NULL
+);
+
+CREATE TABLE shoe (
+  id_shoe INT AUTO_INCREMENT  PRIMARY KEY,
+  name VARCHAR(250) NOT NULL,
+  size INT NOT NULL,
+  color VARCHAR(250) NOT NULL,
+  quantity INT NOT NULL,
+  id_stock INT NOT NULL,
+  CONSTRAINT FK_ShoeStock FOREIGN KEY (id_stock)
+  REFERENCES stock(id_stock)
+);
+
 INSERT INTO stock (id_stock, total_quantity) Values (1, 19);
-
-
 INSERT INTO shoe (id_shoe, name, size, color, quantity, id_stock) Values (1, 'mocasines', 42, 'BLACK', 1, 1);
 INSERT INTO shoe (id_shoe, name, size, color, quantity, id_stock) Values (2, 'deportivas', 41, 'BLACK', 1, 1);
 INSERT INTO shoe (id_shoe, name, size, color, quantity, id_stock) Values (3, 'botines', 43, 'BLACK', 1, 1);

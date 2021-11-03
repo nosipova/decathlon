@@ -54,7 +54,7 @@ public class StockServiceImpl implements IStockService {
 
 	public Stock getStock() {
 
-		StockEntity stockEntity = stockRepository.findAll().get(0);
+		StockEntity stockEntity = stockRepository.getCurrentStockWithShoes();
 
 		return stockMapper.stockEntityToStock(stockEntity);
 	}
@@ -74,13 +74,13 @@ public class StockServiceImpl implements IStockService {
 
 		this.shoeRepository.deleteAll();
 		this.stockRepository.deleteAll();
-		StockEntity stockSaved = this.stockRepository.saveAndFlush(this.stockMapper.stockToStockEntity(stock));
+		StockEntity stockSaved = this.stockRepository.save(this.stockMapper.stockToStockEntity(stock));
 		List<ShoeEntity> mergedShoes = new ArrayList<ShoeEntity>();
 		for (ShoeEntity s : stockSaved.getShoesEntity()) {
 			s.setStock(stockSaved);
 			mergedShoes.add(s);
 		}
-		this.shoeRepository.saveAllAndFlush(mergedShoes);
+		this.shoeRepository.saveAll(mergedShoes);
 
 		return this.stockMapper.stockEntityToStock(stockSaved);
 	}
@@ -96,7 +96,7 @@ public class StockServiceImpl implements IStockService {
 	@Override
 	public Shoe addShoeToStock(Shoe shoe) throws QuantityException {
 
-		StockEntity stockEntity = stockRepository.findAll().get(0);
+		StockEntity stockEntity = stockRepository.getCurrentStockWithShoes();
 		Stock stock = stockMapper.stockEntityToStock(stockEntity);
 		ShoeEntity shoeEntity = new ShoeEntity();
 		if (State.FULL.equals(stock.getState())) {

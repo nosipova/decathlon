@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +63,7 @@ class StockServiceImplTest {
 	public void setUp() {
 		stockEntity = new StockEntity();
 		stockEntity.setId_Stock(BigInteger.ONE);
-		stockEntity.setTotalQuantity(9);
+		stockEntity.setTotalQuantity(19);
 
 		this.shoeToAdd = Shoe.builder().size(BigInteger.valueOf(42)).color(Color.BLUE).name("mocasines")
 				.quantity(BigInteger.valueOf(10)).build();
@@ -79,7 +78,7 @@ class StockServiceImplTest {
 		shoeEntityFound.setQuantity(BigInteger.valueOf(9));
 
 		Shoe shoe = Shoe.builder().size(BigInteger.valueOf(42)).color(Color.BLACK).name("botines")
-				.quantity(BigInteger.TEN).build();
+				.quantity(BigInteger.ONE).build();
 		Shoes shoes = Shoes.builder().shoes(List.of(shoe)).build();
 
 		this.stock = Stock.builder().totalQuantity(BigInteger.TEN).state(State.SOME).shoes(shoes).build();
@@ -87,10 +86,9 @@ class StockServiceImplTest {
 	}
 
 	@Test
-	void getStockTestWithStateSOME() {
-
+	void getStockTestWithSomeState() {
 		when(this.stockMapper.stockEntityToStock(this.stockEntity)).thenReturn(this.stock);
-		when(this.stockRepository.findAll().get(0)).thenReturn(this.stockEntity);
+		when(this.stockRepository.getCurrentStockWithShoes()).thenReturn(this.stockEntity);
 		Stock stockResult = stockServiceImpl.getStock();
 
 		assertThat(stockResult).isNotNull();
@@ -121,20 +119,7 @@ class StockServiceImplTest {
 	}
 
 	@Test
-	void updateStockTestWithSomeState() throws QuantityException {
-		when(this.stockMapper.stockToStockEntity(this.stock)).thenReturn(this.stockEntity);
-		when(this.stockRepository.save(this.stockEntity)).thenReturn(this.stockEntity);
-		when(this.stockMapper.stockEntityToStock(this.stockEntity)).thenReturn(this.stock);
-
-		Stock stockResult = stockServiceImpl.updateStock(this.stock);
-
-		assertThat(stockResult).isNotNull();
-		assertThat(stockResult.getState()).isEqualTo(State.SOME);
-		assertThat(stockResult.getShoes().getShoes()).isNotEmpty();
-	}
-
-	@Test
-	void updateStockTestQuantityExceptionMoreThan30() {
+	void updateStockTestMoreThan30QuantityException() {
 		this.stockEntity.setTotalQuantity(35);
 		this.stockEntity.setShoesEntity(new HashSet<ShoeEntity>());
 
@@ -168,17 +153,16 @@ class StockServiceImplTest {
 	}
 
 	@Test
-	void addShoeOldModelToStockReturnShoeSaved() throws QuantityException {
+	void addShoeToStockReturnShoeSaved() throws QuantityException {
 
 		when(this.stockMapper.shoeToShoeEntity(this.shoeToAdd)).thenReturn(shoeToSearch);
 		when(this.stockMapper.stockEntityToStock(Mockito.any())).thenReturn(this.stock);
 		when(this.shoeRepository.exists(Mockito.any())).thenReturn(Boolean.TRUE);
 		Optional<ShoeEntity> shoeOptional = Optional.of(shoeEntityFound);
 		when(this.shoeRepository.findOne(Mockito.any())).thenReturn(shoeOptional);
-		when(this.stockRepository.findAll().get(0)).thenReturn(this.stockEntity);
+		when(this.stockRepository.getCurrentStockWithShoes()).thenReturn(this.stockEntity);
 		when(this.stockMapper.shoeEntityToShoe(shoeEntityFound)).thenReturn(shoeToAdd);
 		when(this.shoeRepository.save(Mockito.any())).thenReturn(shoeEntityFound);
-		ReflectionTestUtils.setField(stockServiceImpl, "messageCapacity", MESSAGE_ERROR_CAPACITY);
 
 		Shoe shoeResult = stockServiceImpl.addShoeToStock(this.shoeToAdd);
 
@@ -187,25 +171,7 @@ class StockServiceImplTest {
 	}
 
 	@Test
-	void addShoeOldModelToStockOver30ReturnQuantityException() throws QuantityException {
-		this.stockEntity.setTotalQuantity(15);
-		when(this.stockMapper.shoeToShoeEntity(this.shoeToAdd)).thenReturn(shoeToSearch);
-		when(this.stockMapper.stockEntityToStock(Mockito.any())).thenReturn(this.stock);
-		when(this.shoeRepository.exists(Mockito.any())).thenReturn(Boolean.TRUE);
-		Optional<ShoeEntity> shoeOptional = Optional.of(shoeEntityFound);
-		when(this.shoeRepository.findOne(Mockito.any())).thenReturn(shoeOptional);
-		when(this.stockRepository.findAll().get(0)).thenReturn(this.stockEntity);
-		when(this.stockMapper.shoeEntityToShoe(shoeEntityFound)).thenReturn(shoeToAdd);
-		when(this.shoeRepository.save(Mockito.any())).thenReturn(shoeEntityFound);
-		ReflectionTestUtils.setField(stockServiceImpl, "messageCapacity", MESSAGE_ERROR_CAPACITY);
-
-		Assertions.assertThrows(QuantityException.class, () -> {
-			stockServiceImpl.addShoeToStock(this.shoeToAdd);
-		});
-	}
-
-	@Test
-	void addShoeOldModelOnStockFullReturnQuantityException() throws QuantityException {
+	void addShoeOnStockFullReturnQuantityException() throws QuantityException {
 
 		this.stock = Stock.builder().state(State.FULL).build();
 		when(this.stockMapper.shoeToShoeEntity(this.shoeToAdd)).thenReturn(shoeToSearch);
@@ -213,10 +179,9 @@ class StockServiceImplTest {
 		when(this.shoeRepository.exists(Mockito.any())).thenReturn(Boolean.TRUE);
 		Optional<ShoeEntity> shoeOptional = Optional.of(shoeEntityFound);
 		when(this.shoeRepository.findOne(Mockito.any())).thenReturn(shoeOptional);
-		when(this.stockRepository.findAll().get(0)).thenReturn(this.stockEntity);
+		when(this.stockRepository.getCurrentStockWithShoes()).thenReturn(this.stockEntity);
 		when(this.stockMapper.shoeEntityToShoe(shoeEntityFound)).thenReturn(shoeToAdd);
 		when(this.shoeRepository.save(Mockito.any())).thenReturn(shoeEntityFound);
-		ReflectionTestUtils.setField(stockServiceImpl, "messageCapacity", MESSAGE_ERROR_CAPACITY);
 
 		Assertions.assertThrows(QuantityException.class, () -> {
 			stockServiceImpl.addShoeToStock(this.shoeToAdd);
@@ -224,7 +189,7 @@ class StockServiceImplTest {
 	}
 
 	@Test
-	void addShoeNewModelToStockReturnShoeSaved() throws QuantityException {
+	void addNewShoeToStockReturnShoeSaved() throws QuantityException {
 
 		ShoeEntity shoeEntity = new ShoeEntity();
 		shoeEntity.setColor(Color.BLACK.toString());
@@ -235,10 +200,9 @@ class StockServiceImplTest {
 		when(this.stockMapper.stockEntityToStock(this.stockEntity)).thenReturn(this.stock);
 		when(this.shoeRepository.exists(Mockito.any())).thenReturn(Boolean.FALSE);
 
-		when(this.stockRepository.findAll().get(0)).thenReturn(this.stockEntity);
+		when(this.stockRepository.getCurrentStockWithShoes()).thenReturn(this.stockEntity);
 		when(this.stockMapper.shoeEntityToShoe(shoeEntityFound)).thenReturn(shoeToAdd);
 		when(this.shoeRepository.save(Mockito.any())).thenReturn(shoeEntityFound);
-		ReflectionTestUtils.setField(stockServiceImpl, "messageCapacity", MESSAGE_ERROR_CAPACITY);
 
 		Shoe shoeResult = stockServiceImpl.addShoeToStock(this.shoeToAdd);
 
@@ -247,7 +211,7 @@ class StockServiceImplTest {
 	}
 
 	@Test
-	void getShoeTestWithShoeOK() {
+	void getShoeTestWithExistsShoe() {
 
 		Optional<ShoeEntity> shoeOptional = Optional.of(shoeEntityFound);
 		when(this.shoeRepository.findOne(Mockito.any())).thenReturn(shoeOptional);
@@ -259,7 +223,7 @@ class StockServiceImplTest {
 	}
 
 	@Test
-	void getShoeTestWithShoeReturnNull() {
+	void getShoeTestWithNotExistsShoeReturnNull() {
 
 		when(this.shoeRepository.findOne(Mockito.any())).thenReturn(null);
 		when(this.stockMapper.shoeEntityToShoe(this.shoeEntityFound)).thenReturn(shoeToAdd);

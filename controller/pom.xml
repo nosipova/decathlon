@@ -9,11 +9,20 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
+	<groupId>com.example.demo</groupId>
 	<artifactId>controller</artifactId>
+	<version>0.1</version>
+	<name>stock-api-controller</name>
+	<description>Demo project for Spring Boot REST API</description>
+	<!-- define the packaging type -->
+	<packaging>jar</packaging>
+	
+	
+	
 	<properties>
 		<springfox.version>3.0.0</springfox.version>
 	</properties>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.example</groupId>
@@ -62,13 +71,21 @@
 		</dependency>
 	</dependencies>
 
+		<!-- Spring boot maven plugin to create executable JAR -->
 	<build>
+		<finalName>stock-api-controller</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<configuration>
+							<mainClass>com.example.demo.MultipleCoreImplemSampleApplication</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
