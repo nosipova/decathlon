@@ -38,20 +38,15 @@ There are two ways to launch the application:
 ## Testing API services
  
  After we had launched our API application and accessed on http://localhost:8080/swagger-ui/index.html we could see all available services of our API called 'StockController' with following routes:
--  _GET_​/shoes​/stock : will return the stock with state of stock, total quantity and all shoes of the shop. 
+-  _GET_​/shoes​/stock : will return the stock with state of stock, total quantity and all shoes of the shop. Example of request with curl:
 
-   <summary><b>Example of request with curl: </b></summary>
-    
-    
-   ```shell script  
-    curl --location --request GET 'http://localhost:8080/shoes/stock'    
-   ```
+```shell script  
+curl --location --request GET 'http://localhost:8080/shoes/stock'    
+```
 
-- _PATCH_​/shoes​/stock : update the stock and shoes(The shoes could be created, deleted or updated)
-
-   <summary><b>Example of request with curl: </b></summary>
+- _PATCH_​/shoes​/stock : update the stock and shoes(The shoes could be created, deleted or updated). Example of request with curl:
    
-   ```shell script   
+```shell script   
 curl --location --request PATCH 'http://localhost:8080/shoes/stock' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -148,12 +143,10 @@ curl --location --request PATCH 'http://localhost:8080/shoes/stock' \
 }'
 ```
 
-- _PUT_​/shoes​/stock/shoe : add a new shoe to global stock
-
-   <summary><b>Example of request with curl: </b></summary>
+- _PUT_​/shoes​/stock/shoe : add a new shoe to global stock. Example of request with curl:
    
-   ```shell script 
-   curl --location --request PUT 'http://localhost:8080/shoes/stock/shoe?name="salon"&size=39&color="BLACK"&quantity=1'
+```shell script 
+curl --location --request PUT 'http://localhost:8080/shoes/stock/shoe?name="salon"&size=39&color="BLACK"&quantity=1'
 ```
 
 Or if we use Postman application, we can import file ` 'DECATHLON.postman_collection.json' `  inside project folder to our Postman application and launch prepared tests.
