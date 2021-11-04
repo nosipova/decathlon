@@ -40,7 +40,7 @@ There are two ways to launch the application:
  After we had launched our API application and accessed on http://localhost:8080/swagger-ui/index.html we could see all available services of our API called 'StockController' with following routes:
 -  _GET_​/shoes​/stock : will return the stock with state of stock, total quantity and all shoes of the shop. 
 
-<summary><b>Example of request with curl: </b></summary>
+   <summary><b>Example of request with curl: </b></summary>
     
     
    ```shell script  
@@ -147,6 +147,7 @@ curl --location --request PATCH 'http://localhost:8080/shoes/stock' \
   "totalQuantity": 30
 }'
 ```
+
 - _PUT_​/shoes​/stock/shoe : add a new shoe to global stock
 
    <summary><b>Example of request with curl: </b></summary>
@@ -155,4 +156,4 @@ curl --location --request PATCH 'http://localhost:8080/shoes/stock' \
    curl --location --request PUT 'http://localhost:8080/shoes/stock/shoe?name="salon"&size=39&color="BLACK"&quantity=1'
 ```
 
-Or if we use Postman application, we can import file ` 'DECATHLON.postman_collection.json'`  inside project folder to our Postman application and launch prepared tests.
+Or if we use Postman application, we can import file ` 'DECATHLON.postman_collection.json' `  inside project folder to our Postman application and launch prepared tests.
