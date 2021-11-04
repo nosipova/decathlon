@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "a0aaa9c0-edd1-4f65-acde-2d51ed310d64",
+		"name": "DECATHLON",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "_PATCH_​/shoes​/stock",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"state\": \"SOME\",\n  \"shoes\": {\n    \"shoes\": [\n      {\n        \"name\": \"mocasines\",\n        \"size\": 42,\n        \"color\": \"BLACK\",\n        \"quantity\": 1\n      },\n      {\n        \"name\": \"deportivas\",\n        \"size\": 41,\n        \"color\": \"BLACK\",\n        \"quantity\": 1\n      },\n      {\n        \"name\": \"botines\",\n        \"size\": 43,\n        \"color\": \"BLACK\",\n        \"quantity\": 1\n      },\n      {\n        \"name\": \"salon\",\n        \"size\": 40,\n        \"color\": \"BLACK\",\n        \"quantity\": 2\n      },\n      {\n        \"name\": \"salon\",\n        \"size\": 39,\n        \"color\": \"BLACK\",\n        \"quantity\": 2\n      },\n      {\n        \"name\": \"deportivas\",\n        \"size\": 42,\n        \"color\": \"BLUE\",\n        \"quantity\": 2\n      },\n      {\n        \"name\": \"botines\",\n        \"size\": 43,\n        \"color\": \"BLUE\",\n        \"quantity\": 3\n      },\n      {\n        \"name\": \"mocasines\",\n        \"size\": 40,\n        \"color\": \"BLUE\",\n        \"quantity\": 2\n      },\n      {\n        \"name\": \"salon\",\n        \"size\": 38,\n        \"color\": \"BLUE\",\n        \"quantity\": 1\n      },\n      {\n        \"name\": \"botas\",\n        \"size\": 41,\n        \"color\": \"BLUE\",\n        \"quantity\": 1\n      },\n      {\n        \"name\": \"salon\",\n        \"size\": 39,\n        \"color\": \"BLUE\",\n        \"quantity\": 1\n      },\n      {\n        \"name\": \"salon\",\n        \"size\": 37,\n        \"color\": \"BLUE\",\n        \"quantity\": 1\n      },\n      {\n        \"name\": \"sandalias\",\n        \"size\": 36,\n        \"color\": \"BLUE\",\n        \"quantity\": 1\n      },\n      {\n        \"name\": \"sandalias\",\n        \"size\": 38,\n        \"color\": \"BLUE\",\n        \"quantity\": 1\n      }      \n    ]\n  },\n  \"totalQuantity\": 20\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/shoes/stock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoes",
+						"stock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "_GET_​/shoes​/stock",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/shoes/stock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoes",
+						"stock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "_PUT_​/shoes​/stock/shoe",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/shoes/stock/shoe?name=\"salon\"&size=39&color=\"BLACK\"&quantity=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoes",
+						"stock",
+						"shoe"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "\"salon\""
+						},
+						{
+							"key": "size",
+							"value": "39"
+						},
+						{
+							"key": "color",
+							"value": "\"BLACK\""
+						},
+						{
+							"key": "quantity",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
