@@ -1,7 +1,6 @@
 package com.example.demo.services.impl;
 
 import java.math.BigInteger;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +27,6 @@ import com.example.demo.repositories.StockRepository;
 import com.example.demo.services.IStockService;
 import com.example.demo.services.exception.QuantityException;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -52,15 +50,20 @@ public class StockServiceImpl implements IStockService {
 	@Value("${message.capacity_full}")
 	private String messageCapacityFull;
 
-	public Stock getStock() {
+	public Mono<Stock> getStock() {
 
 		StockEntity stockEntity = stockRepository.getCurrentStockWithShoes();
+		Stock st = stockMapper.stockEntityToStock(stockEntity);
 
-		return stockMapper.stockEntityToStock(stockEntity);
+		try {
+			return Mono.just(st);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
-	public Stock updateStock(Stock stock) throws QuantityException {
+	public Mono<Stock> updateStock(Stock stock) throws QuantityException {
 
 		BigInteger totalQuantity = calculateQuantityShoes(stock.getShoes());
 
@@ -81,8 +84,13 @@ public class StockServiceImpl implements IStockService {
 			mergedShoes.add(s);
 		}
 		this.shoeRepository.saveAll(mergedShoes);
+		Stock st = this.stockMapper.stockEntityToStock(stockSaved);
 
-		return this.stockMapper.stockEntityToStock(stockSaved);
+		try {
+			return Mono.just(st);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private BigInteger calculateQuantityShoes(Shoes shoes) {
@@ -94,7 +102,7 @@ public class StockServiceImpl implements IStockService {
 	}
 
 	@Override
-	public Shoe addShoeToStock(Shoe shoe) throws QuantityException {
+	public Mono<Shoe> addShoeToStock(Shoe shoe) throws QuantityException {
 
 		StockEntity stockEntity = stockRepository.getCurrentStockWithShoes();
 		Stock stock = stockMapper.stockEntityToStock(stockEntity);
@@ -121,8 +129,14 @@ public class StockServiceImpl implements IStockService {
 			shoeEntity = updateStockAddNewShoes(stockEntity, shoeEntity);
 
 		}
+		
+		Shoe sh=stockMapper.shoeEntityToShoe(shoeEntity);
 
-		return stockMapper.shoeEntityToShoe(shoeEntity);
+		try {
+			return Mono.just(sh);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

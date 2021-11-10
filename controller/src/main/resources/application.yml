@@ -9,13 +9,12 @@ server:
 ########################
 spring:
   datasource:
-    url: jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
-    platform: h2
-    username: sa
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
     password: admin
-    driverClassName: org.h2.Driver
+    driverClassName: org.postgresql.Driver
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     hibernate:
       ddl-auto: update
     properties:
@@ -23,14 +22,3 @@ spring:
         show_sql: true
         use_sql_comments: true
         format_sql: true
-
-##################
-#   H2 Settings
-##################
-  h2:
-    console:
-      enabled: true
-      path: /console
-      settings:
-        trace: false
-        web-allow-others: true

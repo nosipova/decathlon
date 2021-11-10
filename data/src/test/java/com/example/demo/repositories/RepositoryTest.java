@@ -40,13 +40,6 @@ public class RepositoryTest {
 	}
 
 	@Test
-	public void getTotalStockShoesQuantity() {
-		List<ShoeEntity> shoes = this.shoeRepository.findAll();
-		assertThat(shoes).isNotEmpty();
-		assertThat(shoes.size()).isEqualTo(13);
-	}
-
-	@Test
 	public void getAllShoesFromStock() {
 		assertThat(stockRepository.count()).isEqualTo(1);
 		StockEntity stockEntity = this.stockRepository.findAll().get(0);

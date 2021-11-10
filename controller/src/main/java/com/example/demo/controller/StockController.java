@@ -4,16 +4,15 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.out.Shoe;
 import com.example.demo.dto.out.Stock;
-import com.example.demo.entities.StockEntity;
 import com.example.demo.services.IStockService;
 import com.example.demo.services.exception.QuantityException;
 
@@ -26,7 +25,7 @@ import reactor.core.publisher.Mono;
  * @author nosipova
  *
  */
-@Controller
+@RestController
 @RequestMapping(path = "/shoes")
 @RequiredArgsConstructor
 public class StockController {
@@ -36,9 +35,9 @@ public class StockController {
 
 	@GetMapping(path = "/stock")
 	@ApiOperation(value = "Return all stock shoes and status")
-	public ResponseEntity<Stock> getStock() {
+	public Mono<Stock> getStock() {
 
-		return ResponseEntity.ok(stockService.getStock());
+		return stockService.getStock();
 
 	}
 
