@@ -43,7 +43,7 @@ public class StockController {
 
 	@PatchMapping(path = "/stock")
 	@ApiOperation(value = "Update the stock (Two color accepted: BLACK and BLUE) and max capacity is 30")
-	public ResponseEntity<?> updateStock(@Valid @RequestBody Stock stock) throws QuantityException {
+	public ResponseEntity<Mono<?>> updateStock(@Valid @RequestBody Stock stock) throws QuantityException {
 
 		return ResponseEntity.ok(stockService.updateStock(stock));
 
@@ -51,10 +51,10 @@ public class StockController {
 
 	@PutMapping(path = "/stock/shoe")
 	@ApiOperation(value = "Add shoe to the stock")
-	public ResponseEntity<?> addShoeToStock(@Valid Shoe shoe) throws QuantityException {
+	public ResponseEntity<Mono<?>> addShoeToStock(@Valid Shoe shoe) throws QuantityException {
 
 		return ResponseEntity.ok(stockService.addShoeToStock(shoe));
 
 	}
-	
+
 }
